@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import logo from './logo.svg';
 import './App.css';
 
@@ -18,6 +18,8 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
+        <Counter></Counter>
+        <Users></Users>
         <ul>
           {
             friends.map( friends => <li> {friends} </li> )
@@ -40,6 +42,41 @@ function App() {
   );
 }
 
+// increase count [start]
+function Counter(){
+  const [count, setCount] = useState(0); 
+  return(
+    <div>
+      <h1>Count: {count}</h1>
+      <button onMouseMove= {() => setCount(count - 1)} >Decrease</button>
+      <button onClick={() =>  setCount(count + 1)} >Increase</button>
+    </div>
+  )
+}
+// increase count [finish]
+
+
+function Users() {
+  const [users, setUsers] = useState([]);
+  useEffect(()=> {
+    fetch(`https://jsonplaceholder.typicode.com/users`)
+    .then( res => res.json())
+    .then(data => setUsers(data));
+  }, [] )
+  return(
+    <div>
+      <h3>Dynamic Users: {users.length} </h3>
+      <ul>
+        {
+          users.map( user => <li> {user.name} </li> )
+        }
+      </ul>
+    </div>
+  )
+}
+
+
+//product style
 function Product(props) {
   const productStyle = {
     border: '1px solid grey',
@@ -53,6 +90,8 @@ function Product(props) {
     boxShadow: '5px 5px 3px pink'
     
   }
+
+
 // destructing 
   const {name, price} = props.product;
   return (
